@@ -1,9 +1,14 @@
-float h = 0, s = 1, v = 1,
-      C,
-      H,
-      X,
-      M,
-      r, g, b;
+/*This is a demo for the conversion of an HSV colorspace to
+  an rgb one. The math comes from Wikipedia's HSV and HSL Color
+  page. This demo smoothly transitions through the color spectrum
+  through the change in the hue component of HSV.*/
+
+float h = 0, s = 1, v = 1,  //hsv values for color
+      C,                    //chroma
+      H,                    //idk
+      X,                    //idk :P
+      M,                    //irdk -.-
+      r, g, b;              //rgb output
 
 long lastTime;
 
