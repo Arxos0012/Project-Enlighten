@@ -1,11 +1,5 @@
 #include <math.h>
 
-enum Dials{
- H_DIAL = 0,
- S_DIAL,
- V_DIAL,
-};
-
 const int R_LIGHT = 3,
           G_LIGHT = 5,
           B_LIGHT = 6;
@@ -21,11 +15,14 @@ void setup() {
   pinMode(R_LIGHT, OUTPUT);
   pinMode(G_LIGHT, OUTPUT);
   pinMode(B_LIGHT, OUTPUT);
+  
+  HSV[1] = HSV[2] = 1;
+  
   Serial.begin(9600);
 }
 
 void loop() {
-  if(dialsChanged()) updateRGB();
+  updateRGB();
   
   if(VERBOSE_RGB){
     Serial.print(RGB[0]);
@@ -41,20 +38,12 @@ void loop() {
     Serial.print(", ");
     Serial.println(HSV[2]);
   }
-}
-
-bool dialsChanged(){
-  for(int i=0; i<3; i++) lastHSV[i] = HSV[i];
-    
-  HSV[0] = 360.0 * (analogRead(H_DIAL)/1023.0);
-  HSV[1] = analogRead(S_DIAL)/1023.0;
-  HSV[2] = analogRead(V_DIAL)/1023.0;
-  
-  for(int i=0; i<3; i++) if(lastHSV[i] != HSV[i]) return true;
-  return false;
+  delay(25);
 }
 
 void updateRGB(){
+  HSV[0] = fmod((HSV[0]+1), 360);
+  
   chroma = HSV[1] * HSV[2];
   hueP = HSV[0]/60.0;
   X = chroma*(1-abs(fmod(hueP,2)-1));
